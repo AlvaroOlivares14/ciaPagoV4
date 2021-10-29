@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+/* fondo pagina */
+.bg {
+	/* The image used */
+	background-image: url("../assets/fondo.jpg");
+
+	/* Full height */
+	/*height: 100%;*/
+
+	/* Full whidth*/
+	/*width: 100%;*/ 
+
+	/* Center and scale the image nicely */
+	background-position: center;
+	background-repeat: repeat;
+	background-size: cover;
+	/*background-attachment: fixed;*/
+}
+
+body {
+ 	font-family: 'Roboto', sans-serif;
+}
+
+nav.navbar {
+	background-color: #0776E9;
+	z-index: 1030;
+}
+
+/* estilo de fieldset (modal) */
+fieldset.scheduler-border {
+    border: 1px groove black !important;
+    /*border-style: groove !important;*/
+    margin-bottom: 10px !important;
+    margin-top: 20px !important;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+legend.scheduler-border {
+       width: auto !important;
+       border: none;
+       font-size: 20px;
+}
+
+footer.ft {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700;
+}
+
+a.nav-link {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 900;
+}
+
+.nav-link:hover {
+	color: #CFCFCF !important;
+}
+
+.slide{
+	margin-top:2vh;
+	height: 10cm !important;
+}
+
+img.imagenCarrusel{
+	max-width: 100% !important;
+	height: auto !important;
+}
+
+@import '~bootstrap/scss/bootstrap.scss';

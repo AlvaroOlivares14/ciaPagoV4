@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="h-100">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+		<!-- Latest compiled and minified CSS -->
+		<link href="{% static 'CSS/bootstrap.min.css' %}" rel="stylesheet">
+
+		<link rel="stylesheet" href="{% static 'CSS/styles.css' %}">
+
+		<title>Inicio</title>
+	</head>
+
+	<body class=" d-flex flex-column h-100">
+		
+		<header>
+			<nav class="navbar navbar-expand-lg py-0 navbar-light container-fluid position-fixed">
+				<div class="container-fluid">
+					<a class="navbar-brand py-2" href="#">
+						<img style="width: 60px; height: 70px;" src="{% static 'assets/CASUB.png' %}" alt="" class="d-inline-block align-text-top">
+					</a>
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+					<div class="collapse navbar-collapse" id="navbarNav">
+						<ul class="navbar-nav col d-flex align-items-center h4">
+							<li class="nav-item">
+								<a class="nav-link link text-white" aria-current="page" href="#">Quienes somos?</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-white" href="#">Como usar</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-white" href="#">Noticias</a>
+							</li>
+							<li class="nav-item col"></li>
+							<li class="nav-item">
+								<a class="nav-link text-white" href="" data-bs-toggle="modal" data-bs-target="#inicioSesion">
+									<img src="{% static 'assets/iconoInicio.png' %}"> Iniciar sesión
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		
+		<main class="flex-shrink-0">
+
+			<!-- modal inicio sesion -->
+			<div class="modal fade" id="inicioSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel"></h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<!--modificar action-->
+								<form action="actions/autenticarInicio.php" method="POST">
+									<fieldset style="margin-top: 5px !important;" class="scheduler-border">
+										<legend align="center">Iniciar sesión</legend>
+										<div style="height: 25px;" class="col-md-12"></div>
+
+										<!-- mensaje de error -->
+										<!--<div style="display: none;" class="alert alert-danger alert-dismissible fade in" role="alert" id="errorM">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button> <strong> Error!</strong>
+											<b>Usuario o contraseña incorrecto</b>
+													
+										</div>-->
+										<div class="form-group col-md-12">
+											<label for="inputNick">Nombre de usuario</label>
+
+											<div class="input-group input-group-lg">
+												<span class="input-group-text" id="sizing-addon1">
+													<img src="{% static 'assets/user_icon.png' %}"></img>
+												</span>
+												<input type="nickname" name="nickInicio" class="form-control" id="inicioNick" placeholder="Nickname" required>
+														
+											</div>
+
+										</div>
+										<div class="form-group col-md-12">
+											<label for="inputPass">Contraseña</label>
+
+											<div class="input-group input-group-lg">
+												<span class="input-group-text" id="sizing-addon1">
+													<img src="{% static 'assets/pass_icon.png' %}"></img>
+												</span>
+												<input type="password" name="passInicio" class="form-control" id="inicioPass" placeholder="Contraseña" required>
+														
+											</div>
+													
+										</div>
+										<div style="height: 35px;" class="col-md-12"></div>
+										<div class="form-group row">
+											<div class="col text-center">
+												<button type="submit" class="btn btn-primary">Ingresar</button>
+											</div>
+										</div>
+										<div style="height: 20px;" class="col-md-12"></div>
+												
+										<div style="height: 20px;" class="col-md-12"></div>
+									</fieldset>
+											
+								</form>
+							</div>
+						</div>
+						<!--<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Send message</button>
+						</div>-->
+					</div>
+				</div>
+			</div>
+
+			<div style="height: 15vh;"></div>
+
+			<!-- carrusel -->
+			<div id="carouselExampleControls"  class="carousel slide" data-bs-ride="carousel">
+				<div style="height: 100%" class="carousel-inner d-flex align-items-center">
+					<div class="carousel-item active">
+						<img src="{% static 'assets/carrusel_3.jpg' %}" class="d-block w-100 imagenCarrusel" alt="carrusel_3">
+					</div>
+					<div class="carousel-item">
+						<img src="{% static 'assets/carrusel_2.jpg' %}" class="d-block w-100 imagenCarrusel" alt="carrusel_2">
+					</div>
+					<div class="carousel-item">
+						<img src="{% static 'assets/carrusel_1.jpg' %}" class="d-block w-100 imagenCarrusel" alt="carrusel_1">
+					</div>
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+
+		</main>
+
+		<footer style="background-color: #0776E9;" class="footer mt-auto py-3 ft">
+			<div class="container">
+				<span class="text-white">Place sticky footer content here.</span>
+			</div>
+		</footer>
+
+
+		<!-- sripts -->
+		<script src="{% static 'JS/bootstrap.bundle.min.js' %}"></script>
+
+	</body>
+</html>

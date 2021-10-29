@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+		<!-- Latest compiled and minified CSS -->
+		<link href="{% static 'CSS/bootstrap.min.css' %}" rel="stylesheet">
+
+		<link rel="stylesheet" href="{% static 'CSS/styles.css' %}">
+
+		<title>Inicio</title>
+</head>
+<body>
+	<!--modificar action-->
+
+	
+
+	{% block content %}
+
+	{% if form.errors %}
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+	 		<b>Usuario o contraseña incorrecto</b>
+	 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	{% endif %}
+
+	{% if next %}
+	    {% if user.is_authenticated %}
+	    <p>Your account doesn't have access to this page. To proceed,
+	    please login with an account that has access.</p>
+	    {% else %}
+	    <p>Please login to see this page.</p>
+	    {% endif %}
+	{% endif %}
+
+	<form action="{% url 'login' %}" method="POST">
+		{% csrf_token %}
+		<fieldset style="margin-top: 5px !important;" class="scheduler-border">
+			<legend align="center">Iniciar sesión</legend>
+			<div style="height: 25px;" class="col-md-12"></div>
+
+			<div class="form-group col-md-12">
+				<label for="id_username">Nombre de usuario</label>
+
+				<div class="input-group input-group-lg" id='username'>
+					 
+					<span class="input-group-text" id="sizing-addon1">
+						<img src="{% static 'assets/user_icon.png' %}"></img>
+					</span>
+					<input id="id_username" name="username" type="text" class="form-control">
+							
+				</div>
+
+			</div>
+			<div class="form-group col-md-12" >
+				<label for="id_password">Contraseña</label>
+
+				<div class="input-group input-group-lg" id="password">
+					<span class="input-group-text" id="sizing-addon1">
+						<img src="{% static 'assets/pass_icon.png' %}"></img>
+					</span>
+					<input id="id_password" name="password" type="password" class="form-control">
+							
+				</div>
+						
+			</div>
+			<div style="height: 35px;" class="col-md-12"></div>
+			<div class="form-group row">
+				<div class="col text-center">
+					<button type="submit" class="btn btn-primary">Ingresar</button>
+				</div>
+			</div>
+			<div style="height: 20px;" class="col-md-12"></div>
+					
+			<div style="height: 20px;" class="col-md-12"></div>
+		</fieldset>
+				
+	</form>
+
+	{# Assumes you setup the password_reset view in your URLconf #}
+	<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+	{% endblock %}
+
+	<!-- sripts -->
+	<script src="{% static 'JS/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
