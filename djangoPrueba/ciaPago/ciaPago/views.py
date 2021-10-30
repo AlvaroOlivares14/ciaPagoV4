@@ -19,7 +19,7 @@ def index(request):
 @login_required(login_url='/index/login/')
 def perfil(request):
 	#username = request.user.username
-	cuotas = Cuotassociales.objects.all()
+	cuotas = Cuotassociales.objects.all().filter(fk_rut=request.user.username)
 	data = {
 		'cuotas': cuotas
 	}

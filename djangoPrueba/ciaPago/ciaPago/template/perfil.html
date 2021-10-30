@@ -91,24 +91,38 @@
 				<div class="w-100">barra de filtrado</div>
 
 				<!-- listado cuotas -->
-				<div>
-					<table class="table table-striped table-hover table-bordered">
+				<div style="margin-right: 15px">
+					<table class="table table-striped table-hover table-bordered align-middle">
 						<thead>
 							<tr>
+								<td>ID pozo</td>
 								<td>Fecha emision</td>
 								<td>Valor</td>
 								<td>Fecha vencimiento</td>
 								<td>Estado</td>
+								<td></td>
 							</tr>
 						</thead>
 						<tbody>
 							{% if cuotas %}
 								{% for cuota in cuotas %}
 									<tr>
+										<td>{{ cuota.fk_idcasub3 }}</td>
 										<td>{{ cuota.fechaemicion }}</td>
 										<td>{{ cuota.valor }}</td>
 										<td>{{ cuota.fechavencimiento }}</td>
-										<td>{{ cuota.estadocuota }}</td>
+										<td>
+											{% if cuota.estadocuota == 1 %}
+												pagado
+											{% else %}
+												no pagado
+											{% endif %}
+										</td>
+										<td class="text-center">
+											{% if cuota.estadocuota == 0 %}
+												<button type="button" class="btn btn-outline-success" id="{{ cuota.idcuota }}" onclick="pagarBtn(this.id)">Pagar</button>
+											{% endif %}
+										</td>
 									</tr>
 								{% endfor %}
 							{% else %}
@@ -126,6 +140,16 @@
 
 		<!-- sripts -->
 		<script src="{% static 'JS/bootstrap.bundle.min.js' %}"></script>
+
+		{% block js_block %}
+
+			<script>
+				function pagarBtn(id) {
+					/*document.getElementById(id).innerText = id;*/
+				};
+			</script>
+			
+		{% endblock %}
 		
 	</body>
 </html>
