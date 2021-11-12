@@ -17,6 +17,7 @@ from django.urls import reverse_lazy
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SITE_ID = 2
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'ciaPago',
 ]
 
@@ -127,6 +129,7 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/'
+BASE_URL = 'http://www.example.com'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -137,3 +140,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #LOGOUT_REDIRECT_URL = reverse_lazy('index')
 #login_redirect_url = 'index/'
+
+WEBPAY_WSDL = 'https://webpay3gint.transbank.cl/WSWebpayTransaction/cxf/WSCompleteWebpayService?wsdl'
+WEBPAY_URL_FINAL = BASE_URL + '/core/pagos/webpay/final/'
+WEBPAY_OUR_PRIVATE_KEY = os.path.join( BASE_DIR, 'certs/597020000541.key')
+WEBPAY_OUR_PUBLIC_CERT = os.path.join( BASE_DIR, 'certs/597020000541.crt')
+WEBPAY_CERT = os.path.join( BASE_DIR, 'certs/tbk.pem')
+WEBPAY_COMMERCE_CODE = '597020000541'

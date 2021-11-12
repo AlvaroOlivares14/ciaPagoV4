@@ -119,9 +119,16 @@
 											{% endif %}
 										</td>
 										<td class="text-center">
-											{% if cuota.estadocuota == 0 %}
+											<!--{% if cuota.estadocuota == 0 %}
 												<button type="button" class="btn btn-outline-success" id="{{ cuota.idcuota }}" onclick="pagarBtn(this.id)">Pagar</button>
-											{% endif %}
+											{% endif %}-->
+
+											<!-- botton test -->
+											<form action="" method="post">
+												{% csrf_token %}												<button style="text" type="submit" class="btn" value="{{ cuota.idcuota }}" name="mybtn">pagar</button>
+											</form>
+											<!-- fin botton test -->
+
 										</td>
 									</tr>
 								{% endfor %}

@@ -1,0 +1,46 @@
+{% block title %}
+initTransaction
+{% endblock title %}
+
+{% block header %}
+<h1>Transacción Normal<h1>
+<h2>initTransaction</h2>
+{% endblock header %}
+
+
+{% for key, valor in transaction.items %}
+  {% if key == 'url' %}
+     {% firstof valor as url %}
+  {% endif %}
+  {% if key == 'token' %}
+     {% firstof valor as token %}
+  {% endif %}
+  {% if key == 'envelope_received' %}
+     {% firstof valor as envelope_received %}
+  {% endif %}
+  {% if key == 'envelope_sent' %}
+     {% firstof valor as envelope_sent %}
+  {% endif %}
+{% endfor %}
+
+{% block content %}
+<form method="POST" action="{{ url }}" class="pure-form pure-form-stacked">
+  {% csrf_token %}
+  <fieldset>
+    <label for="show">
+      Token:
+      <code>{{ token }}</code>
+    </label>
+    <input type="hidden" name="token_ws" value="{{ token }}">
+    <button type="submit">Send to TBK</button>
+  </fieldset>
+</form>
+<figure>
+  <caption>Received XML</caption>
+  <code>{{ envelope_received }}</code>
+</figure>
+<figure>
+  <caption>Sent XML</caption>
+  <code>{{ envelope_sent }}</code>
+</figure>
+{% endblock content %}

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, reverse_lazy
-from ciaPago.views import index, perfil
+from ciaPago.views import index, perfil, transComp
 from django.contrib.auth import views
 from django.contrib.auth.decorators import login_required
 from django.conf.urls import include
@@ -30,6 +30,7 @@ urlpatterns = [
 	path('index/login/', views.LoginView.as_view(template_name="index.html"), name='index'),
 	#url(r'^accounts/profile/$', login_required(perfil), login_url='/index/login/'), name='summary'),
 	path('accounts/profile/', perfil, name='perfil'),
+	path('accounts/profile/webpay/trans/', transComp, name='transComp'),
 	path('admin/', admin.site.urls),
     path('index/', include('django.contrib.auth.urls')),
 
