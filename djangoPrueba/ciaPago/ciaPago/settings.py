@@ -142,7 +142,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #login_redirect_url = 'index/'
 
 WEBPAY_WSDL = 'https://webpay3gint.transbank.cl/WSWebpayTransaction/cxf/WSCompleteWebpayService?wsdl'
-WEBPAY_URL_FINAL = BASE_URL + '/core/pagos/webpay/final/'
+#WEBPAY_URL_FINAL = BASE_URL + '/core/pagos/webpay/final/'
+WEBPAY_URL_FINAL = 'http://127.0.0.1:8000/accounts/profile/webpay/cancel/'
 WEBPAY_OUR_PRIVATE_KEY = os.path.join( BASE_DIR, 'certs/597020000541.key')
 WEBPAY_OUR_PUBLIC_CERT = os.path.join( BASE_DIR, 'certs/597020000541.crt')
 WEBPAY_CERT = os.path.join( BASE_DIR, 'certs/tbk.pem')

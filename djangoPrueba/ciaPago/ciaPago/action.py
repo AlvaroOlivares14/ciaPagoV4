@@ -18,10 +18,10 @@ def vista(x):
 	return texto
 
 
-def crearTransWebpay(return_url):
-	buy_order = str(random.randrange(1000000, 99999999))
+def crearTransWebpay(return_url, amount, buy_order):
+	#buy_order = str(random.randrange(1000000, 99999999))
 	session_id = str(random.randrange(1000000, 99999999))
-	amount = random.randrange(10000, 1000000)
+	#amount = random.randrange(10000, 1000000)
 
 	with open(
 		settings.WEBPAY_OUR_PRIVATE_KEY, "r"

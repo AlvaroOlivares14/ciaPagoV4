@@ -63,19 +63,19 @@
 				<hr>
 				<ul class="nav nav-pills flex-column mb-auto">
 					<li class="nav-item">
-						<a href="" class="nav-link active" aria-current="page">
+						<a href="#" class="nav-link active" aria-current="page" id="btnPagar">
 							<svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
 							Cuotas por pagar
 						</a>
 					</li>
 					<li>
-						<a href="" class="nav-link link-dark">
+						<a href="#" class="nav-link link-dark" id="btnHistorial">
 							<svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
 							Historial de cuotas
 						</a>
 					</li>
 					<li>
-						<a href="" class="nav-link link-dark">
+						<a href="#" class="nav-link link-dark" id="btnPerfil">
 							<svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
 							Info. de cuenta
 						</a>
@@ -90,9 +90,57 @@
 				<!-- barra filtradi -->
 				<div class="w-100">barra de filtrado</div>
 
-				<!-- listado cuotas -->
+				<!-- listado cuotas-->
 				<div style="margin-right: 15px">
-					<table class="table table-striped table-hover table-bordered align-middle">
+
+					<!-- por pagar -->
+					<table class="table table-striped table-hover table-bordered align-middle" id="porPagar">
+						<thead>
+							<tr>
+								<td>ID pozo</td>
+								<td>Fecha emision</td>
+								<td>Valor</td>
+								<td>Fecha vencimiento</td>
+								<td>Estado</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							{% if cuotas %}
+								{% for cuota in cuotas %}
+									{% if cuota.estadocuota == 0 %}
+										<tr>
+											<td>{{ cuota.fk_idcasub3 }}</td>
+											<td>{{ cuota.fechaemicion }}</td>
+											<td>{{ cuota.valor }}</td>
+											<td>{{ cuota.fechavencimiento }}</td>
+											<td>
+												{% if cuota.estadocuota == 1 %}
+													pagado
+												{% else %}
+													no pagado
+												{% endif %}
+											</td>
+											<td class="text-center">
+												{% if cuota.estadocuota == 0 %}
+													<form action="" method="post">
+														{% csrf_token %}												<button type="submit" class="btn btn-outline-success" value="{{ cuota.idcuota }}" name="mybtn">Pagar</button>
+													</form>
+												{% endif %}
+											</td>
+										</tr>
+									{% endif %}
+								{% endfor %}
+							{% else %}
+								<h1>Error de carga</h1>
+							{% endif %}
+						</tbody>
+						
+					</table>
+					<!-- fin por pagar -->
+
+					<!-- historial completo -->
+					<table style="visibility: collapse" class="table table-striped table-hover table-bordered align-middle" id="histCompleto">
 						<thead>
 							<tr>
 								<td>ID pozo</td>
@@ -119,16 +167,11 @@
 											{% endif %}
 										</td>
 										<td class="text-center">
-											<!--{% if cuota.estadocuota == 0 %}
-												<button type="button" class="btn btn-outline-success" id="{{ cuota.idcuota }}" onclick="pagarBtn(this.id)">Pagar</button>
-											{% endif %}-->
-
-											<!-- botton test -->
-											<form action="" method="post">
-												{% csrf_token %}												<button style="text" type="submit" class="btn" value="{{ cuota.idcuota }}" name="mybtn">pagar</button>
-											</form>
-											<!-- fin botton test -->
-
+											{% if cuota.estadocuota == 0 %}
+												<form action="" method="post">
+													{% csrf_token %}												<button type="submit" class="btn btn-outline-success" value="{{ cuota.idcuota }}" name="mybtn">Pagar</button>
+												</form>
+											{% endif %}
 										</td>
 									</tr>
 								{% endfor %}
@@ -138,6 +181,7 @@
 						</tbody>
 						
 					</table>
+					<!-- fin historial completo -->
 					
 				</div>
 			</div>
@@ -151,9 +195,36 @@
 		{% block js_block %}
 
 			<script>
-				function pagarBtn(id) {
-					/*document.getElementById(id).innerText = id;*/
-				};
+				document.getElementById("btnPagar").addEventListener("click", mostrarPagar);
+				document.getElementById("btnHistorial").addEventListener("click", mostrarHistorial);
+
+				function mostrarPagar() {
+					$('#btnPagar').addClass('active');
+					$('#btnPagar').removeClass('link-dark');
+
+					$('#btnHistorial').removeClass('active');
+					$('#btnHistorial').addClass('link-dark');
+
+					$('#btnPerfil').removeClass('active');
+					$('#btnPerfil').addClass('link-dark');
+
+					document.getElementById("histCompleto").style.visibility = 'collapse'
+					document.getElementById("porPagar").style.visibility = 'visible'
+				}
+
+				function mostrarHistorial() {
+					$('#btnHistorial').addClass('active');
+					$('#btnHistorial').removeClass('link-dark');
+
+					$('#btnPagar').removeClass('active');
+					$('#btnPagar').addClass('link-dark');
+
+					$('#btnPerfil').removeClass('active');
+					$('#btnPerfil').addClass('link-dark');
+
+					document.getElementById("porPagar").style.visibility = 'collapse'
+					document.getElementById("histCompleto").style.visibility = 'visible'
+				}
 			</script>
 			
 		{% endblock %}
