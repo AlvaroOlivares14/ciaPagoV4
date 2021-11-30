@@ -32,6 +32,7 @@ class Comunero(models.Model):
         verbose_name_plural = 'Comuneros'
 
 
+
 class Cuotassociales(models.Model):
     idcuota = models.CharField(primary_key=True, db_column='idCuota', max_length=256, null=False)  # Field name made lowercase.
     valor = models.IntegerField(null=False)

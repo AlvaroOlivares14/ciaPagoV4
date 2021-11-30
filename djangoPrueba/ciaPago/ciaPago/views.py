@@ -57,9 +57,23 @@ def perfil(request):
 	}
 
 	if (request.POST.get('mybtn')):
-		aux = str(request.POST.get('mybtn'))
-		aux2 = Cuotassociales.objects.all().filter(idcuota=str(aux)).values_list('valor')
-		aux3 = ''.join(str(aux2[0][0]))
+		if (str(request.POST.get('mybtn')).find(',') >= 0):
+			aux = str(request.POST.get('mybtn'))
+			listaID = aux.split(',')
+			total = 0
+
+			for x in listaID:
+				aux2 = Cuotassociales.objects.all().filter(idcuota=str(x)).values_list('valor')
+				aux3 = int(''.join(str(aux2[0][0])))
+				total = total + aux3
+
+			aux3 = total
+
+		else:
+			aux = str(request.POST.get('mybtn'))
+			aux2 = Cuotassociales.objects.all().filter(idcuota=str(aux)).values_list('valor')
+			aux3 = ''.join(str(aux2[0][0]))
+		
 		aux4 = str("{:,}".format(int(aux3)))
 		#domain = Site.objects.get_current().domain
 
@@ -117,8 +131,8 @@ def transComp(request):
 		pago = Pagos.objects.get(idtransaccion=idPago)
 
 
-
-		if ( str(transaction_detail['buyOrder']).find('-') == -1):
+		# en caso de una cuota
+		if ( str(transaction_detail['buyOrder']).find(',') == -1 ):
 
 			# modificar cuota
 			idCuota = str(transaction_detail['buyOrder'])
@@ -128,16 +142,27 @@ def transComp(request):
 			cuota.fk_idtransaccion = pago
 			cuota.save()
 
-			# generar relacion pago-pozo (se debe modificar para multiples pozos)
+			# generar relacion pago-pozo
 			cuota = Cuotassociales.objects.get(idcuota = idCuota)
 			pago_pozo = PagoPozo(fk_idtransaccion2= pago, fk_idcasub2= cuota.fk_idcasub3)
 			pago_pozo.save()
 			
 
+		# en caso de multiples cuotas
 		else:
-			listadoCoutas = str(transaction_detail['buyOrder']).split('-')
+			listadoCoutas = str(transaction_detail['buyOrder']).split(',')
 			for idCuota in listadoCoutas:
-				pass#proximamente
+				# modificar cuota
+				cuota = Cuotassociales.objects.get(idcuota = idCuota)
+				cuota.estadocuota = 1
+				cuota.fk_idtransaccion = pago
+				cuota.save()
+
+				# generar relacion pago-pozo
+				if ( not PagoPozo.objects.filter(fk_idtransaccion2=pago).filter(fk_idcasub2=cuota.fk_idcasub3).exists() ):
+					pago_pozo = PagoPozo(fk_idtransaccion2= pago, fk_idcasub2= cuota.fk_idcasub3)
+					pago_pozo.save()
+			
 		
 		return render(request, 'webpay/success.html', transactionToken)
 	else:

@@ -61,27 +61,48 @@
 			<div class="d-flex flex-column flex-shrink-0 p-3 bg-light position-fixed" style="width: 280px; height: 86vh;">
 				
 				<hr>
-				<ul class="nav nav-pills flex-column mb-auto">
-					<li class="nav-item">
-						<a href="#" class="nav-link active" aria-current="page" id="btnPagar">
-							<svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-							Cuotas por pagar
-						</a>
-					</li>
-					<li>
-						<a href="#" class="nav-link link-dark" id="btnHistorial">
-							<svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
-							Historial de cuotas
-						</a>
-					</li>
-					<li>
-						<a href="#" class="nav-link link-dark" id="btnPerfil">
-							<svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-							Info. de cuenta
-						</a>
-					</li>
-				</ul>
+					<ul class="nav nav-pills flex-column mb-auto">
+						<li class="nav-item">
+							<a href="#" class="nav-link active" aria-current="page" id="btnPagar">
+								<svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+								Cuotas por pagar
+							</a>
+						</li>
+						<li>
+							<a href="#" class="nav-link link-dark" id="btnHistorial">
+								<svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+								Historial de cuotas
+							</a>
+						</li>
+						<li>
+							<a href="#" class="nav-link link-dark" id="btnPerfil">
+								<svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+								Info. de cuenta
+							</a>
+						</li>
+					</ul>
+				<hr style="display: none;" id="barra">
+					<div style="display: none;" id="totalDebe">
+						<p id="totalDebeText">Total: &nbsp;$</p>
+					</div>
+					<div style="display: none;" id="totalHist">
+						<p id="totalHistText">Total hist: &nbsp;$</p>
+					</div>
 				<hr>
+
+				<div style="display: none;" class="text-center" id="pagoMultDebe">
+					<form action="" method="post">
+						{% csrf_token %}
+						<button type="submit" class="btn btn-success" value="" name="mybtn" id="btnMultDebe">Pagar seleccionados</button>
+					</form>
+				</div>
+
+				<div style="display: none;" class="text-center" id="pagoMultHist">
+					<form action="" method="post">
+						{% csrf_token %}
+						<button type="submit" class="btn btn-success" value="" name="mybtn" id="btnMultHist">Pagar seleccionados hist</button>
+					</form>
+				</div>
 				
 			</div>
 			<!-- fin sidebar -->
@@ -110,7 +131,15 @@
 								{% for cuota in cuotas %}
 									{% if cuota.estadocuota == 0 %}
 										<tr>
-											<td>{{ cuota.fk_idcasub3 }}</td>
+											<td>
+												{% if cuota.estadocuota == 0 %}
+													<input class="form-check-input" type="checkbox" name="checkPago" value="{{ cuota.idcuota }},{{ cuota.valor }}" id="{{ cuota.idcuota }}">
+												{% else %}
+													&nbsp;&nbsp;&nbsp;&nbsp;
+												{% endif %}
+												&nbsp;
+												{{ cuota.fk_idcasub3 }}
+											</td>
 											<td>{{ cuota.fechaemicion }}</td>
 											<td>{{ cuota.valor }}</td>
 											<td>{{ cuota.fechavencimiento }}</td>
@@ -140,7 +169,7 @@
 					<!-- fin por pagar -->
 
 					<!-- historial completo -->
-					<table style="visibility: collapse" class="table table-striped table-hover table-bordered align-middle" id="histCompleto">
+					<table style="display: none;" class="table table-striped table-hover table-bordered align-middle" id="histCompleto">
 						<thead>
 							<tr>
 								<td>ID pozo</td>
@@ -155,7 +184,15 @@
 							{% if cuotas %}
 								{% for cuota in cuotas %}
 									<tr>
-										<td>{{ cuota.fk_idcasub3 }}</td>
+										<td>
+											{% if cuota.estadocuota == 0 %}
+												<input class="form-check-input" type="checkbox" name="checkHist" value="{{ cuota.idcuota }},{{ cuota.valor }}" id="{{ cuota.idcuota }}">
+											{% else %}
+												&nbsp;&nbsp;&nbsp;&nbsp;
+											{% endif %}
+											&nbsp;
+											{{ cuota.fk_idcasub3 }}
+										</td>
 										<td>{{ cuota.fechaemicion }}</td>
 										<td>{{ cuota.valor }}</td>
 										<td>{{ cuota.fechavencimiento }}</td>
@@ -194,6 +231,7 @@
 
 		{% block js_block %}
 
+			<!-- mostrar listas -->
 			<script>
 				document.getElementById("btnPagar").addEventListener("click", mostrarPagar);
 				document.getElementById("btnHistorial").addEventListener("click", mostrarHistorial);
@@ -208,8 +246,20 @@
 					$('#btnPerfil').removeClass('active');
 					$('#btnPerfil').addClass('link-dark');
 
-					document.getElementById("histCompleto").style.visibility = 'collapse'
-					document.getElementById("porPagar").style.visibility = 'visible'
+					$('#histCompleto').hide();
+					$('#porPagar').show();
+					$('#pagoMultHist').hide();
+					$('#totalHist').hide();
+
+					if($('input[name=checkPago]').is(':checked')) {
+						$('#pagoMultDebe').show();
+						$('#barra').show();
+						$('#totalDebe').show();
+					} else {
+						$('#pagoMultDebe').hide();
+						$('#barra').hide();
+						$('#totalDebe').hide();
+					}
 				}
 
 				function mostrarHistorial() {
@@ -222,9 +272,120 @@
 					$('#btnPerfil').removeClass('active');
 					$('#btnPerfil').addClass('link-dark');
 
-					document.getElementById("porPagar").style.visibility = 'collapse'
-					document.getElementById("histCompleto").style.visibility = 'visible'
+					$('#porPagar').hide();
+					$('#histCompleto').show();
+					$('#pagoMultDebe').hide();
+					$('#totalDebe').hide();
+
+					if($('input[name=checkHist]').is(':checked')) {
+						$('#pagoMultHist').show();
+						$('#barra').show();
+						$('#totalHist').show();
+					} else {
+						$('#pagoMultHist').hide();
+						$('#barra').hide();
+						$('#totalHist').hide();
+					}
 				}
+			</script>
+
+			<!-- boton pago multiple (lisado debido) -->
+			<script>
+				var totalDebe = 0;
+				var listaIDdebe = '';
+
+				$('input[name=checkPago]').change(function(){
+					if($('input[name=checkPago]').is(':checked')) {
+						$('#pagoMultDebe').show();
+						$('#barra').show();
+						$('#totalDebe').show();
+					} else {
+						$('#pagoMultDebe').hide();
+						$('#barra').hide();
+						$('#totalDebe').hide();
+					}
+
+					if($(this).is(':checked')) {
+
+						const aux = $(this).val().toString().split(',');
+						totalDebe = totalDebe + parseInt(aux[1]);
+						$('#totalDebeText').text('total:  $ '+ totalDebe.toString());
+						if (listaIDdebe == '') {
+							listaIDdebe = aux[0]
+						} else {
+							listaIDdebe = listaIDdebe + ',' + aux[0]
+						}
+						$('#btnMultDebe').val(listaIDdebe)
+						//$('#totalDebeText').text(listaIDdebe);
+
+					} else {
+
+						const aux = $(this).val().toString().split(',');
+						totalDebe = totalDebe - parseInt(aux[1]);
+						$('#totalDebeText').text('total:  $ '+ totalDebe.toString());
+						if (listaIDdebe.indexOf(','+aux[0]+',') >= 0){
+							listaIDdebe = listaIDdebe.replace(','+aux[0]+',',',');
+						} else if (listaIDdebe.indexOf(aux[0]+',') >= 0) {
+							listaIDdebe = listaIDdebe.replace(aux[0]+',','');
+						} else if (listaIDdebe.indexOf(','+aux[0]) >= 0) {
+							listaIDdebe = listaIDdebe.replace(','+aux[0],'');
+						} else if (listaIDdebe.indexOf(aux[0]) >= 0) {
+							listaIDdebe = listaIDdebe.replace(aux[0],'');
+						}
+						$('#btnMultDebe').val(listaIDdebe)
+						//$('#totalDebeText').text(listaIDdebe);
+
+					}
+				});
+			</script>
+
+			<!-- boton pago multiple (historial completo) -->
+			<script>
+				var totalHist = 0;
+				var listaIDhist = '';
+
+				$('input[name=checkHist]').change(function(){
+					if($('input[name=checkHist]').is(':checked')) {
+						$('#pagoMultHist').show();
+						$('#barra').show();
+						$('#totalHist').show();
+					} else {
+						$('#pagoMultHist').hide();
+						$('#barra').hide();
+						$('#totalHist').hide();
+					}
+
+					if($(this).is(':checked')) {
+
+						const aux = $(this).val().toString().split(',');
+						totalHist = totalHist + parseInt(aux[1]);
+						$('#totalHistText').text('total:  $ '+ totalHist.toString());
+						if (listaIDhist == '') {
+							listaIDhist = aux[0]
+						} else {
+							listaIDhist = listaIDhist + ',' + aux[0]
+						}
+						$('#btnMultHist').val(listaIDhist)
+						//$('#totalHistText').text(listaIDhist);
+
+					} else {
+						const aux = $(this).val().toString().split(',');
+						totalHist = totalHist - parseInt(aux[1]);
+						$('#totalHistText').text('total:  $ '+ totalHist.toString());
+						if (listaIDhist.indexOf(','+aux[0]+',') >= 0){
+							listaIDhist = listaIDhist.replace(','+aux[0]+',',',');
+						} else if (listaIDhist.indexOf(aux[0]+',') >= 0) {
+							listaIDhist = listaIDhist.replace(aux[0]+',','');
+						} else if (listaIDhist.indexOf(','+aux[0]) >= 0) {
+							listaIDhist = listaIDhist.replace(','+aux[0],'');
+						} else if (listaIDhist.indexOf(aux[0]) >= 0) {
+							listaIDhist = listaIDhist.replace(aux[0],'');
+						}
+						$('#btnMultHist').val(listaIDhist)
+						//$('#totalHistText').text(listaIDhist);
+
+					}
+				});
 			</script>
 			
 		{% endblock %}
