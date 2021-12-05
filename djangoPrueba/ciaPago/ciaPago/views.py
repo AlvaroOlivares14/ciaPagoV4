@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from django.template import RequestContext
-from ciaPago.basePrueba import Cuotassociales, PagoPozo, Pagos
+from ciaPago.models import Cuotassociales, PagoPozo, Pagos
 from ciaPago.action import vista, crearTransWebpay
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_exempt
